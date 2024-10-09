@@ -8,7 +8,7 @@ from beanie.odm.enums import SortDirection
 from beanie.odm.queries.update import UpdateResponse
 from beanie.odm.utils.pydantic import get_model_fields, get_extra_field_info
 from pydantic import Field
-from pymongo import DESCENDING, ASCENDING
+from pymongo import DESCENDING, ASCENDING, IndexModel
 
 from beanie_batteries_queue.queue import Queue
 
@@ -46,7 +46,7 @@ class Task(Document):
                 ("created_at", ASCENDING),
             ],
             # expire after 1 day
-            [("created_at", ASCENDING), ("expireAfterSeconds", 86400)],
+            IndexModel([("created_at", ASCENDING)], expireAfterSeconds=86400),
         ]
 
     @classmethod
